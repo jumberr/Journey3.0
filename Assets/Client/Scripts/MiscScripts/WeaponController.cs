@@ -252,8 +252,7 @@ namespace Client.Scripts.MiscScripts
                     {
                         if (enemy.EnemySo.TypeEnemy == EnemySO.EnemyType.Melee)
                         {
-                            //enemy.SetAnimation("Damage");
-                            StartCoroutine(enemy.SetAnimationDamage());
+                            StartCoroutine(EnemyAnimations.SetAnimationDamage(enemy));
                         }
                         DoDamage(enemy, weaponSo.Damage);
                         

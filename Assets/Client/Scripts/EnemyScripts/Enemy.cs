@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Client.Classes;
 using Client.Scripts.PlayerScripts;
 using Client.Scripts.ScriptSO;
@@ -15,12 +13,10 @@ namespace Client.Scripts.EnemyScripts
 {
     public class Enemy : MonoBehaviour
     {
-        [Header("Enemy characteristics")] [SerializeField]
-        private EnemySO enemySo;
-
+        [Header("Enemy characteristics")] 
+        [SerializeField] private EnemySO enemySo;
         [SerializeField] private NavMeshAgent agent;
-
-        //[SerializeField] private Transform gun;
+        
         [SerializeField] private LineRenderer line;
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private AnimatorController animatorController;
@@ -33,7 +29,6 @@ namespace Client.Scripts.EnemyScripts
         private bool init;
 
         private Dictionary<string, int> animationDict = new Dictionary<string, int>();
-        private const float OFF_ANIMATION_VALUE = -1f;
 
         private EnemyRaw enemyRaw;
         private EnemyState enemyState = new EnemyState(EnemyState.State.Patrol, EnemyState.State.Patrol);
@@ -41,13 +36,13 @@ namespace Client.Scripts.EnemyScripts
         private delegate void EnemyEvent();
 
         private event EnemyEvent OnChangeState;
+        
+        public Dictionary<string, int> AnimationDict
+        {
+            get => animationDict;
+            set => animationDict = value;
+        }
 
-
-        // private static readonly int Idle = Animator.StringToHash("Idle");
-        // private static readonly int Attack = Animator.StringToHash("Attack");
-        // private static readonly int Walk = Animator.StringToHash("Walk");
-        // private static readonly int Damage = Animator.StringToHash("Damage");
-        // private static readonly int Death = Animator.StringToHash("Death");
         public EnemyRaw EnemyRaw => enemyRaw;
         public EnemySO EnemySo => enemySo;
 
@@ -65,7 +60,7 @@ namespace Client.Scripts.EnemyScripts
 
             player = Player.localPlayer.Transform;
             OnChangeState += ChangeState;
-            GetBlendMotionsCount();
+            EnemyAnimations.GetBlendMotionsCount(this, animatorController);
             StartCoroutine(CheckDistances());
         }
 
@@ -116,12 +111,12 @@ namespace Client.Scripts.EnemyScripts
                 Coroutine lookAtCoroutine = null;
                 while (enemyState.CurrentState == EnemyState.State.Attack)
                 {
-                    ResetAllAnimParameters();
-                    SetAnimation("Attack");
-                    if (!(lookAtCoroutine is  null))
+                    EnemyAnimations.ResetAllAnimParameters(this);
+                    EnemyAnimations.SetAnimation(this, "Attack");
+                    if (!(lookAtCoroutine is null))
                         StopCoroutine(lookAtCoroutine);
                     lookAtCoroutine = StartCoroutine(LookAtPlayer(player));
-                    
+
                     if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out var hit,
                         layerMask))
                     {
@@ -147,8 +142,8 @@ namespace Client.Scripts.EnemyScripts
             {
                 while (enemyState.CurrentState == EnemyState.State.Attack)
                 {
-                    ResetAllAnimParameters();
-                    SetAnimation("Attack");
+                    EnemyAnimations.ResetAllAnimParameters(this);
+                    EnemyAnimations.SetAnimation(this, "Attack");
                     OnTriggerEnter(playerCollider);
                     yield return new WaitForSeconds(EnemyAnimator.GetCurrentAnimatorStateInfo(0).length);
                 }
@@ -157,16 +152,16 @@ namespace Client.Scripts.EnemyScripts
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<PlayerHealth>(out var player))
+            if (other.TryGetComponent<PlayerHealth>(out var health))
             {
-                player.playerHealthDecrease.Invoke(enemySo.Damage);
+                health.playerHealthDecrease.Invoke(enemySo.Damage);
             }
         }
 
         private IEnumerator EnemyChasing()
         {
-            ResetAllAnimParameters();
-            SetAnimation("Walk");
+            EnemyAnimations.ResetAllAnimParameters(this);
+            EnemyAnimations.SetAnimation(this, "Walk");
             while (enemyState.CurrentState == EnemyState.State.Chasing)
             {
                 LookAt(player);
@@ -186,8 +181,8 @@ namespace Client.Scripts.EnemyScripts
                     var numberOfMoves = Rnd(1, 10);
                     while (numberOfMoves > 0)
                     {
-                        ResetAllAnimParameters();
-                        SetAnimation("Walk");
+                        EnemyAnimations.ResetAllAnimParameters(this);
+                        EnemyAnimations.SetAnimation(this, "Walk");
                         var dest = startPos + new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
                         agent.SetDestination(dest);
                         var time = (dest - transform.position).magnitude / agent.speed;
@@ -198,8 +193,8 @@ namespace Client.Scripts.EnemyScripts
                 else
                 {
                     agent.ResetPath();
-                    ResetAllAnimParameters();
-                    SetAnimation("Idle");
+                    EnemyAnimations.ResetAllAnimParameters(this);
+                    EnemyAnimations.SetAnimation(this, "Idle");
                     yield return new WaitForSeconds(enemyChillTime);
                 }
             }
@@ -227,59 +222,6 @@ namespace Client.Scripts.EnemyScripts
             OnChangeState -= ChangeState;
         }
 
-        private void GetBlendMotionsCount()
-        {
-            var rootStateMachine = animatorController.layers[0].stateMachine;
-            for (var i = 0; i < rootStateMachine.states.Length; i++)
-            {
-                Debug.Log(rootStateMachine.states[i].state.name);
-                var blendTree = rootStateMachine.states[i].state.motion as BlendTree;
-                if (blendTree is null) continue;
-                switch (rootStateMachine.states[i].state.name)
-                {
-                    case "Attack":
-                        animationDict.Add("Attack", blendTree.children.Length);
-                        break;
-                    case "Idle":
-                        animationDict.Add("Idle", blendTree.children.Length);
-                        break;
-                    case "Damage":
-                        animationDict.Add("Damage", blendTree.children.Length);
-                        break;
-                    case "Death":
-                        animationDict.Add("Death", blendTree.children.Length);
-                        break;
-                    case "Walk":
-                        animationDict.Add("Walk", blendTree.children.Length);
-                        break;
-                }
-            }
-        }
-
-        private void SetAnimation(string animationName)
-        {
-            var rnd = animationDict[animationName] != 1
-                ? Rnd(0, animationDict[animationName]) / (animationDict[animationName] - 1f)
-                : 1f;
-            EnemyAnimator.SetFloat(animationName, rnd);
-        }
-
-        private void OffAnimation(string animationName)
-        {
-            EnemyAnimator.SetFloat(animationName, OFF_ANIMATION_VALUE);
-        }
-
-        internal IEnumerator SetAnimationDamage()
-        {
-            SetAnimation("Damage");
-            yield return new WaitForSeconds(EnemyAnimator.GetCurrentAnimatorStateInfo(0).length);
-            OffAnimation("Damage");
-        }
-
-        private void ResetAllAnimParameters()
-        {
-            animationDict.Keys.ToList().ForEach(animName => enemyAnimator.SetFloat(animName, OFF_ANIMATION_VALUE));
-        }
 
         private bool LookAt(Transform target)
         {

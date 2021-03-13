@@ -70,6 +70,7 @@
      <Compile Include="Assets\AssetStore\AK LP\Components\Scripts\Misc\LookAtCamera.cs" />
      <Compile Include="Assets\AssetStore\AK LP\Components\Scripts\Weapon_Scripts\AutomaticGunScriptLPFP.cs" />
      <Compile Include="Assets\AssetStore\AK LP\Components\Scripts\Weapon_Scripts\HandgunScriptLPFP.cs" />
+     <Compile Include="Assets\Client\Classes\EnemyAnimations.cs" />
      <Compile Include="Assets\Client\Classes\EnemyRaw.cs" />
      <Compile Include="Assets\Client\Classes\Person.cs" />
      <Compile Include="Assets\Client\Classes\Player.cs" />
