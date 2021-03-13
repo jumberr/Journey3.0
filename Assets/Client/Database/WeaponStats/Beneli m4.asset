@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e7afc20af76614abb92e79dce2b252, type: 3}
+  m_Name: Beneli m4
+  m_EditorClassIdentifier: 
+  weaponType: 3
+  weaponName: Beneli M4
+  fireRange: 8
+  fireRate: 0.5
+  currAmmoMagazine: 7
+  ammoMagazine: 7
+  allAmmo: 35
+  isAuto: 0
+  damage: 50
+  reloadTime: 3
+  accuracy: 0.8
+  accuracyDistance: 8
+  shootAudio: {fileID: 8300000, guid: 53a1a8c18087346d18a02d8a4e0c59ca, type: 3}
+  reloadAudio: {fileID: 8300000, guid: 3c5c1d4d7b9307c458890a4beb12e4ae, type: 3}
+  zoomAudio: {fileID: 8300000, guid: acaebc89b98b82142bd2b24edb6081e4, type: 3}
+  changeGun: {fileID: 8300000, guid: 2ae41e984ff1f3e4a840a1a46b6a8816, type: 3}

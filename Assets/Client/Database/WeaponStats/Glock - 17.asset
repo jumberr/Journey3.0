@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e7afc20af76614abb92e79dce2b252, type: 3}
+  m_Name: Glock - 17
+  m_EditorClassIdentifier: 
+  weaponType: 0
+  weaponName: Glock - 17
+  fireRange: 25
+  fireRate: 0.3
+  currAmmoMagazine: 20
+  ammoMagazine: 20
+  allAmmo: 120
+  isAuto: 0
+  damage: 22
+  reloadTime: 1.5
+  accuracy: 0.25
+  accuracyDistance: 25
+  shootAudio: {fileID: 8300000, guid: 65201ddabb4144f6a8fb9480120b7656, type: 3}
+  reloadAudio: {fileID: 8300000, guid: e7632c6401c09437e83de45d33c5858e, type: 3}
+  zoomAudio: {fileID: 8300000, guid: acaebc89b98b82142bd2b24edb6081e4, type: 3}
+  changeGun: {fileID: 8300000, guid: 2ae41e984ff1f3e4a840a1a46b6a8816, type: 3}

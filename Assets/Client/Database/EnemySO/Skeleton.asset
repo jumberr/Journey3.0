@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95c88c81bf13c9e4a8bcc8ec66de104f, type: 3}
+  m_Name: Skeleton
+  m_EditorClassIdentifier: Assembly-CSharp:Client.Scripts:EnemySO
+  enemyType: 0
+  health: 150
+  moveSpeed: 5
+  damage: 20
+  attackDistance: 4
+  chasingDistance: 30
+  endAttackDistance: 4.5
+  endChasingDistance: 40
