@@ -74,6 +74,11 @@
      <Compile Include="Assets\Client\Classes\EnemyRaw.cs" />
      <Compile Include="Assets\Client\Classes\Person.cs" />
      <Compile Include="Assets\Client\Classes\Player.cs" />
+     <Compile Include="Assets\Client\Classes\StateMachine.cs" />
+     <Compile Include="Assets\Client\Classes\States\AttackState.cs" />
+     <Compile Include="Assets\Client\Classes\States\ChasingState.cs" />
+     <Compile Include="Assets\Client\Classes\States\IState.cs" />
+     <Compile Include="Assets\Client\Classes\States\PatrolState.cs" />
      <Compile Include="Assets\Client\Scripts\EnemyScripts\Enemy.cs" />
      <Compile Include="Assets\Client\Scripts\EnemyScripts\EnemyHealthBar.cs" />
      <Compile Include="Assets\Client\Scripts\EnemyScripts\EnemySpawnController.cs" />

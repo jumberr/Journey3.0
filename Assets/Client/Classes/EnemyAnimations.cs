@@ -15,7 +15,6 @@ namespace Client.Classes
             var rootStateMachine = animatorController.layers[0].stateMachine;
             for (var i = 0; i < rootStateMachine.states.Length; i++)
             {
-                Debug.Log(rootStateMachine.states[i].state.name);
                 var blendTree = rootStateMachine.states[i].state.motion as BlendTree;
                 if (blendTree is null) continue;
                 switch (rootStateMachine.states[i].state.name)

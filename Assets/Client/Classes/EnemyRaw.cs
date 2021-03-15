@@ -8,7 +8,7 @@ namespace Client.Classes
 {
     public class EnemyRaw : Person
     {
-        public static List<EnemyRaw> enemies = new List<EnemyRaw>();
+        private static List<EnemyRaw> enemies = new List<EnemyRaw>();
 
         private static int nextIndex;
         private int index;
@@ -16,7 +16,7 @@ namespace Client.Classes
         public GameObject GameObject { get; }
         public Transform Transform { get; }
 
-        private EnemySO enemySo;
+        private readonly EnemySO enemySo;
         private EnemyHealthBar healthBar;
 
         private readonly float damage;
